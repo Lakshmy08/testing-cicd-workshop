@@ -8,7 +8,7 @@ describe('Calculator Unit Tests', () => {
         test('should add two positive numbers', () => {
             expect(calculator.add(2, 3)).toBe(5);
         });
-        
+        //
         test('should add negative numbers', () => {
             expect(calculator.add(-2, -3)).toBe(-5);
         });
