@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Enhanced CI Pipeline
 
 on:
   push:
@@ -6,40 +6,66 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  NODE_VERSION: '22.x'
+
 jobs:
-  test:
+  lint-and-security:
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [22.x]
+    name: Code Quality & Security
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v3
     
-    - name: Setup Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run ESLint
+      run: npm run lint
+    
+    - name: Run security audit
+      run: npx audit-ci --moderate
+  
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: Unit Tests
+    needs: lint-and-security
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
     
     - name: Install dependencies
       run: npm ci
     
     - name: Run unit tests
-      run: npm run test:unit
+      run: npm run test:unit -- --verbose
     
-    - name: Run integration tests
-      run: npm run test:integration
-    
-    - name: Generate test coverage
-      run: npm run test:coverage
-    
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v5
+    - name: Upload unit test results
+      uses: actions/upload-artifact@v3
+      if: always()
       with:
-        file: ./coverage/lcov.info
-        flags: unittests
-        name: codecov-umbrella
-        token: ${{ secrets.CODECOV_TOKEN }}
+        name: unit-test-results
+        path: coverage/
+  
+  integration-tests:
+    runs-on: ubuntu-latest
+    name: Integration Tests
+    needs: unit-tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
