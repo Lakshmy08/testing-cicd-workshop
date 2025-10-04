@@ -40,6 +40,6 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         file: ./coverage/lcov.info
-        token: ${{ 00916432-8431-43ce-906a-c25a0fe5ee3b }}
+       
         flags: unittests
         name: codecov-umbrella
