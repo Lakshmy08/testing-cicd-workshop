@@ -1,4 +1,5 @@
-const { calculator } = require('../app');
+
+const { calculator,server } = require('../app');
 afterAll((done) => {
     server.close(done); // closes the server so Jest can exit
 });
