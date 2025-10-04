@@ -16,7 +16,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
     
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -40,5 +40,6 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         file: ./coverage/lcov.info
+        token: ${{ 00916432-8431-43ce-906a-c25a0fe5ee3b }}
         flags: unittests
         name: codecov-umbrella
