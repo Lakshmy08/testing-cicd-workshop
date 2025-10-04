@@ -30,6 +30,21 @@
     "collectCoverageFrom": [
       "*.js",
       "!node_modules/**"
-    ]
+    ],
+    "reporters":[
+      "default",
+      ["jest-html-reporter",{
+        "pageTitle":"Calculator API Test Report",
+        "outputPath":"test-report.html"
+      }],[
+        "jest-junit",{
+          "outputDirectory":"test-results",
+          "outputName":"junit.xml"
+        }
+      ]
+      
+    ],
+    "coverageReporters": ["text","lcov","html"]
+
   }
 }
