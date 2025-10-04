@@ -1,26 +1,42 @@
-module.exports = {
-  env: {
-    browser: false, // Set true if you also have frontend code here
-    node: true,     // Enables Node.js global variables
-    es2021: true,   // Enables ES2021 syntax (like optional chaining)
-    jest: true,     // Enables Jest globals (for unit/integration tests)
+import js from "@eslint/js";
+import prettier from "eslint-config-prettier";
+
+export default [
+  js.configs.recommended, // eslint:recommended
+
+  {
+    files: ["*.js", "tests/**/*.js"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: {
+        console: "readonly",
+        process: "readonly",
+        require: "readonly",
+        module: "readonly",
+        describe: "readonly", // Jest globals
+        test: "readonly",
+        expect: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly"
+      }
+    },
+    rules: {
+      "no-console": "off",
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "prefer-const": "warn",
+      "eqeqeq": ["error", "always"],
+      "curly": ["error", "all"],
+      "semi": ["error", "always"]
+    }
   },
-  extends: [
-    "eslint:recommended",          // Basic recommended rules
-    "plugin:prettier/recommended", // Integrate Prettier (auto formatting)
-  ],
-  parserOptions: {
-    ecmaVersion: "latest", // Allows newest JS syntax
-    sourceType: "module",  // Enable import/export
-  },
-  rules: {
-   
-    "no-console": "off",           // Allow console.log (useful for backend)
-    "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "prefer-const": "warn",
-    "eqeqeq": ["error", "always"],
-    "curly": ["error", "all"],
-    "semi": ["error", "always"],
-  },
-};
- 
+
+  // Prettier integration
+  {
+    files: ["*.js", "tests/**/*.js"],
+    ignores: [],
+    rules: {
+      ...prettier.rules
+    }
+  }
+];
