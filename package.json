@@ -23,6 +23,7 @@
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
     "jest": "^30.2.0",
+    "jest-html-reporter": "^4.3.0",
     "supertest": "^7.1.4"
   },
   "jest": {
@@ -31,20 +32,27 @@
       "*.js",
       "!node_modules/**"
     ],
-    "reporters":[
+    "reporters": [
       "default",
-      ["jest-html-reporter",{
-        "pageTitle":"Calculator API Test Report",
-        "outputPath":"test-report.html"
-      }],[
-        "jest-junit",{
-          "outputDirectory":"test-results",
-          "outputName":"junit.xml"
+      [
+        "jest-html-reporter",
+        {
+          "pageTitle": "Calculator API Test Report",
+          "outputPath": "test-report.html"
+        }
+      ],
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "test-results",
+          "outputName": "junit.xml"
         }
       ]
-      
     ],
-    "coverageReporters": ["text","lcov","html"]
-
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ]
   }
 }
